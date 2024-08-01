@@ -66,8 +66,3 @@ class Parser:
         elif url_rss == config.RIA_URL:
             text_blocks = soup.find('div', class_='article__body js-mediator-article mia-analytics').find_all('div', class_='article__text')
             return ''.join([text_block.text for text_block in text_blocks])
-
-
-parser = Parser()
-parser.parse()
-parser.get_articles()
