@@ -1,16 +1,19 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Query, Depends, Request
+from sqlalchemy.orm import Session
 from fastapi.responses import HTMLResponse
 from services.parser import Parser
 import uvicorn
-from fastapi.staticfiles import StaticFiles
 from apscheduler.schedulers.background import BackgroundScheduler
+from models.database import get_db
+from models.news import NewsArticleDB
+from fastapi.templating import Jinja2Templates
+
 
 app = FastAPI()
 scheduler = BackgroundScheduler()
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
+templates = Jinja2Templates(directory="templates")
 
-HTML_FILE_PATH = "static/test.html"
 
 def scheduled_job():
     print('Parsing.....')
@@ -25,11 +28,13 @@ def start_scheduler():
     scheduler.add_job(scheduled_job, 'interval', minutes=60*24)
     scheduler.start()
 
+from models.database import SessionLocal
 @app.get("/", response_class=HTMLResponse)
-async def read_html():
-    with open(HTML_FILE_PATH, "r", encoding="utf-8") as file:
-        page = file.read()
-    return HTMLResponse(content=page)
+async def read_articles(request: Request, skip: int = Query(0), limit: int = Query(30)):
+    db = next(get_db())
+    articles = db.query(NewsArticleDB).offset(skip).limit(limit).all()
+
+    return templates.TemplateResponse("test.html", {"request": request, "articles": articles})
 
 
 if __name__ == "__main__":

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News Aggregator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0;
+        }
+        nav {
+            background-color: #444;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+        nav a {
+            color: #fff;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+        #news-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        .news-item {
+            background-color: #fff;
+            margin: 10px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            width: 45%;
+            box-sizing: border-box;
+        }
+        .news-item h2 {
+            margin-top: 0;
+        }
+        .news-item p {
+            color: #666;
+        }
+        .filters {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .filters input, .filters select {
+            padding: 10px;
+            margin-right: 10px;
+        }
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>News Aggregator</h1>
+    </header>
+    <nav>
+        <a href="#">Home</a>
+        <a href="#">Categories</a>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+    </nav>
+    <div class="container">
+        <div class="filters">
+            <input type="text" id="search" placeholder="Search news...">
+            <select id="category">
+                <option value="all">All Categories</option>
+                <option value="technology">Technology</option>
+                <option value="sports">Sports</option>
+                <option value="business">Business</option>
+                <option value="entertainment">Entertainment</option>
+            </select>
+            <button onclick="filterNews()">Filter</button>
+        </div>
+        {% for article in articles %}
+        <div id="news-list">
+            <!-- Пример новостей -->
+            <div class="news-item">
+                <h2>{{ article.title }}</h2>
+                <p>Short description of the news...</p>
+                <a href="#" onclick="viewDetails(1)">Read more</a>
+            </div>
+            <!-- Другие новости -->
+        </div>
+        {% endfor %}
+    </div>
+    <footer>
+        <p>News Aggregator &copy; 2024</p>
+    </footer>
+
+    <script>
+        function filterNews() {
+            // Функция для фильтрации новостей
+            var searchQuery = document.getElementById('search').value;
+            var category = document.getElementById('category').value;
+            console.log("Search Query: ", searchQuery);
+            console.log("Category: ", category);
+            // Здесь можно сделать запрос к API для получения фильтрованных новостей
+        }
+
+        function viewDetails(newsId) {
+            // Функция для отображения полного текста новости
+            console.log("News ID: ", newsId);
+            // Здесь можно сделать запрос к API для получения деталей новости
+        }
+    </script>
+</body>
+</html>
