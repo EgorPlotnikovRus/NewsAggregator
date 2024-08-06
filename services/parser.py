@@ -1,10 +1,12 @@
 import requests
 from bs4 import BeautifulSoup
 from utils import config
-from api.schemas import NewsArticle
 from datetime import datetime
 from typing import List
 import csv
+import re
+from api.schemas import NewsArticle
+from services.news_service import save_articles
 
 class Parser:
     def __init__(self, urls: List[str] = config.URLS):
@@ -65,4 +67,7 @@ class Parser:
 
         elif url_rss == config.RIA_URL:
             text_blocks = soup.find('div', class_='article__body js-mediator-article mia-analytics').find_all('div', class_='article__text')
-            return ''.join([text_block.text for text_block in text_blocks])
+            return re.sub(r'^[^.]*[.]', '', ''.join([text_block.text for text_block in text_blocks])).strip()
+
+    def save_articles_to_db(self):
+        save_articles(self.get_articles())
