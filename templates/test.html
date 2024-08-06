@@ -42,18 +42,48 @@
             justify-content: space-around;
         }
         .news-item {
+            display: flex;
+            flex-direction: column; /* Устанавливаем вертикальное направление для флекс-контейнера */
+            justify-content: space-between; /* Размещаем элементы так, чтобы свободное пространство между ними было распределено */
             background-color: #fff;
             margin: 10px;
             padding: 20px;
             border: 1px solid #ddd;
             width: 45%;
             box-sizing: border-box;
+            height: 250px; /* Задайте фиксированную высоту или используйте min-height */
         }
         .news-item h2 {
             margin-top: 0;
         }
         .news-item p {
             color: #666;
+        }
+        .datecat {
+            display: flex;
+            justify-content: space-between; /* Распределение пространства между элементами */
+            padding: 1px; /* Отступы внутри контейнера */
+            margin-top: auto; /* Отодвигает блок с датой и категорией вниз */
+        }
+        .date {
+            font-size: 18px; /* Размер шрифта для дополнительных данных */
+            color: #333;
+            margin-right: auto; /* Отодвигает текст 1 к левому краю */
+        }
+        .category {
+            font-size: 18px; /* Размер шрифта для дополнительных данных */
+            color: #333; /* Цвет текста */
+            margin-left: auto; /* Отодвигает текст 2 к правому краю */
+        }
+        .source {
+            font-size: 18px; /* Размер шрифта для дополнительных данных */
+            color: #333; /* Цвет текста */
+            margin: 5px 0; /* Отступы между строками */
+        }
+        .positivity {
+            font-size: 16px; /* Размер шрифта для дополнительных данных */
+            color: #333; /* Цвет текста */
+            margin: 5px 0; /* Отступы между строками */
         }
         .filters {
             margin: 20px 0;
@@ -70,18 +100,30 @@
             padding: 10px 0;
             margin-top: 20px;
         }
+        .pagination {
+            display: flex;
+            justify-content: space-between; /* Распределение кнопок по краям */
+            margin: 20px 0;
+        }
+        .pagination button {
+            padding: 15px 30px; /* Увеличенные отступы для кнопок */
+            margin: 0 5px;
+            background-color: #444;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 16px; /* Увеличенный размер шрифта */
+            border-radius: 5px; /* Скругленные углы */
+        }
+        .pagination button:hover {
+            background-color: #555; /* Цвет при наведении */
+        }
     </style>
 </head>
 <body>
     <header>
         <h1>News Aggregator</h1>
     </header>
-    <nav>
-        <a href="#">Home</a>
-        <a href="#">Categories</a>
-        <a href="#">About</a>
-        <a href="#">Contact</a>
-    </nav>
     <div class="container">
         <div class="filters">
             <input type="text" id="search" placeholder="Search news...">
@@ -94,17 +136,22 @@
             </select>
             <button onclick="filterNews()">Filter</button>
         </div>
-        {% for article in articles %}
         <div id="news-list">
-            <!-- Пример новостей -->
-            <div class="news-item">
-                <h2>{{ article.title }}</h2>
-                <p>Short description of the news...</p>
-                <a href="#" onclick="viewDetails(1)">Read more</a>
+            {% for article in articles %}
+            <div class="news-item" onclick="viewDetails(1)" style="cursor: pointer;">
+                <p class="positivity">Positivity: 50%</p>
+                <h2> {{ article.title }}</h2>
+                <div class="datecat">
+                    <p class="date">{{article.pub_date}}, {{article.resurse_name}} </p>
+                    <p class="category">{{article.category}}</p>
+                </div>
             </div>
-            <!-- Другие новости -->
+            {% endfor %}
         </div>
-        {% endfor %}
+        <div class="pagination">
+            <button onclick="navigate(-1)">Назад</button>
+            <button onclick="navigate(1)">Далее</button>
+        </div>
     </div>
     <footer>
         <p>News Aggregator &copy; 2024</p>
@@ -124,6 +171,17 @@
             // Функция для отображения полного текста новости
             console.log("News ID: ", newsId);
             // Здесь можно сделать запрос к API для получения деталей новости
+        }
+
+        function navigate(direction) {
+            // Функция для навигации по страницам
+            if (direction === -1) {
+                console.log("Navigate to previous page");
+                // Здесь добавьте логику для перехода на предыдущую страницу
+            } else if (direction === 1) {
+                console.log("Navigate to next page");
+                // Здесь добавьте логику для перехода на следующую страницу
+            }
         }
     </script>
 </body>
