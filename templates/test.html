@@ -43,15 +43,15 @@
         }
         .news-item {
             display: flex;
-            flex-direction: column; /* Устанавливаем вертикальное направление для флекс-контейнера */
-            justify-content: space-between; /* Размещаем элементы так, чтобы свободное пространство между ними было распределено */
+            flex-direction: column;
+            justify-content: space-between;
             background-color: #fff;
             margin: 10px;
             padding: 20px;
             border: 1px solid #ddd;
             width: 45%;
             box-sizing: border-box;
-            height: 250px; /* Задайте фиксированную высоту или используйте min-height */
+            height: 250px;
         }
         .news-item h2 {
             margin-top: 0;
@@ -61,29 +61,29 @@
         }
         .datecat {
             display: flex;
-            justify-content: space-between; /* Распределение пространства между элементами */
-            padding: 1px; /* Отступы внутри контейнера */
-            margin-top: auto; /* Отодвигает блок с датой и категорией вниз */
+            justify-content: space-between;
+            padding: 1px;
+            margin-top: auto;
         }
         .date {
-            font-size: 18px; /* Размер шрифта для дополнительных данных */
+            font-size: 18px;
             color: #333;
-            margin-right: auto; /* Отодвигает текст 1 к левому краю */
+            margin-right: auto;
         }
         .category {
-            font-size: 18px; /* Размер шрифта для дополнительных данных */
-            color: #333; /* Цвет текста */
-            margin-left: auto; /* Отодвигает текст 2 к правому краю */
+            font-size: 18px;
+            color: #333;
+            margin-left: auto;
         }
         .source {
-            font-size: 18px; /* Размер шрифта для дополнительных данных */
-            color: #333; /* Цвет текста */
-            margin: 5px 0; /* Отступы между строками */
+            font-size: 18px;
+            color: #333;
+            margin: 5px 0;
         }
         .positivity {
-            font-size: 16px; /* Размер шрифта для дополнительных данных */
-            color: #333; /* Цвет текста */
-            margin: 5px 0; /* Отступы между строками */
+            font-size: 16px;
+            color: #333;
+            margin: 5px 0;
         }
         .filters {
             margin: 20px 0;
@@ -102,21 +102,21 @@
         }
         .pagination {
             display: flex;
-            justify-content: space-between; /* Распределение кнопок по краям */
+            justify-content: space-between;
             margin: 20px 0;
         }
         .pagination button {
-            padding: 15px 30px; /* Увеличенные отступы для кнопок */
+            padding: 15px 30px;
             margin: 0 5px;
             background-color: #444;
             color: #fff;
             border: none;
             cursor: pointer;
-            font-size: 16px; /* Увеличенный размер шрифта */
-            border-radius: 5px; /* Скругленные углы */
+            font-size: 16px;
+            border-radius: 5px;
         }
         .pagination button:hover {
-            background-color: #555; /* Цвет при наведении */
+            background-color: #555;
         }
     </style>
 </head>
@@ -138,7 +138,7 @@
         </div>
         <div id="news-list">
             {% for article in articles %}
-            <div class="news-item" onclick="viewDetails(1)" style="cursor: pointer;">
+            <div class="news-item" onclick="window.location.href='/news/{{ article.id }}'" style="cursor: pointer;">
                 <p class="positivity">Positivity: 50%</p>
                 <h2> {{ article.title }}</h2>
                 <div class="datecat">
@@ -159,29 +159,28 @@
 
     <script>
         function filterNews() {
-            // Функция для фильтрации новостей
             var searchQuery = document.getElementById('search').value;
             var category = document.getElementById('category').value;
             console.log("Search Query: ", searchQuery);
             console.log("Category: ", category);
-            // Здесь можно сделать запрос к API для получения фильтрованных новостей
+        }
+    function navigate(direction) {
+        const url = new URL(window.location.href);
+
+        const skipParam = url.searchParams.get('skip');
+        let skip = skipParam ? parseInt(skipParam, 10) : 0;
+
+        if (direction === -1) {
+            skip -= 30;
+            console.log("Navigate to previous page");
+        } else if (direction === 1) {
+            skip += 30;
+            console.log("Navigate to next page");
         }
 
-        function viewDetails(newsId) {
-            // Функция для отображения полного текста новости
-            console.log("News ID: ", newsId);
-            // Здесь можно сделать запрос к API для получения деталей новости
-        }
+        url.searchParams.set('skip', skip);
 
-        function navigate(direction) {
-            // Функция для навигации по страницам
-            if (direction === -1) {
-                console.log("Navigate to previous page");
-                // Здесь добавьте логику для перехода на предыдущую страницу
-            } else if (direction === 1) {
-                console.log("Navigate to next page");
-                // Здесь добавьте логику для перехода на следующую страницу
-            }
+        window.location.href = url.toString();
         }
     </script>
 </body>
