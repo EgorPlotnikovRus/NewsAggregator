@@ -38,7 +38,7 @@ def start_scheduler():
 @app.get("/", response_class=HTMLResponse)
 async def read_articles(request: Request, skip: int = Query(0), limit: int = Query(30)):
     db = next(get_db())
-    articles = db.query(NewsArticleDB).offset(skip).limit(limit).all()
+    articles = db.query(NewsArticleDB).order_by(NewsArticleDB.pub_date.desc()).offset(skip).limit(limit).all()
 
     return templates.TemplateResponse("test.html", {"request": request, "articles": articles})
 
